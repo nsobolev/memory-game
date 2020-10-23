@@ -62,24 +62,55 @@ export const makeBoard = (m, n) => {
 // === View ===
 export const BoardView = ({ board, onClickAt }) => {
   return (
-    <div className="board">
-      {
-        board.map((cell, index) => (
-          <Cell.View 
-            key={ index } 
-            cell={ cell } 
-            onClick={_ => onClickAt(index) } 
-          />
-        ))
-      }
-    </div>
+    <>
+      <div className="board">
+        {
+          board.map((cell, index) => (
+            <Cell.View 
+              key={ index } 
+              cell={ cell } 
+              onClick={_ => onClickAt(index) } 
+            />
+          ))
+        }
+      </div>
+
+      <style jsx>{`
+        .board {
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr;
+          grid-template-rows: 1fr 1fr;
+          width: 640px;
+          height: 480px;
+          gap: 2px;
+        }
+      `}</style>
+    </>
   )
 };
 
-export const ScreenView = ({ className, children }) => {
+export const ScreenView = ({ background, children }) => {
   return (
-    <div className={`screen ${className}`}>
-      { children }
-    </div>
+    <>
+      <div className="screen">
+        { children }
+      </div>
+
+      <style jsx>{`
+        .screen {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 640px;
+          height: 480px;
+          cursor: pointer;
+          background-color: ${background};
+        }
+        
+        :global(.screen h1) {
+          font-size: 3rem;
+        }
+      `}</style>
+    </>
   )
 };

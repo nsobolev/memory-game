@@ -54,13 +54,21 @@ const canOpenCell = R.curry((index, state) => {
   return Board.canOpenAt(index, state.board);
 });
 
+const statusToBackground = (status) => {
+  switch(status) {
+    case Status.Won:  return '#a8db8f';
+    case Status.Lost: return '#db8f8f';
+    default:          return '#dcdcdc';
+  }
+};
+
 const ScreenBoxView = ({ status, board, onClickAt }) => {
   switch(status) {
     case Status.Running: 
       return  <Board.BoardView board={ board } onClickAt={ (index) => onClickAt(index) } />
     
     case Status.Stopped: 
-      return <Board.ScreenView className="gray">
+      return <Board.ScreenView background={ statusToBackground(status) }>
         <div>
           <h1>Memory game</h1>
           <p className="small" style={{ textAlign: 'center' }}>Click anywhere to start!</p>
@@ -68,7 +76,7 @@ const ScreenBoxView = ({ status, board, onClickAt }) => {
       </Board.ScreenView>
 
     case Status.Won: 
-      return <Board.ScreenView className="green">
+      return <Board.ScreenView background={ statusToBackground(status) }>
         <div>
           <h1>Victory!</h1>
           <p className="small" style={{ textAlign: 'center' }}>Click anywhere to try again!</p>
@@ -76,7 +84,7 @@ const ScreenBoxView = ({ status, board, onClickAt }) => {
       </Board.ScreenView>
 
     case Status.Lost: 
-      return <Board.ScreenView className="red">
+      return <Board.ScreenView background={ statusToBackground(status) }>
         <div>
           <h1>Defeat!</h1>
           <p className="small" style={{ textAlign: 'center' }}>Click anywhere to try again!</p>
@@ -87,12 +95,26 @@ const ScreenBoxView = ({ status, board, onClickAt }) => {
 
 const StatusLineView = ({ status, secondsLeft }) => {
   return (
-    <div className="status-line">
-      <div>{ status === Status.Running ? ":)" : "Lets Go!" }</div>
-      <div className="timer">
-        { status === Status.Running && `Seconds left: ${secondsLeft}` }
+    <>
+      <div className="status-line">
+        <div>{ status === Status.Running ? ":)" : "Lets Go!" }</div>
+        <div className="timer">
+          { status === Status.Running && `Seconds left: ${secondsLeft}` }
+        </div>
       </div>
-    </div>
+      <style jsx>{`
+        .status-line {
+          display: flex;
+          justify-content: space-between;
+          font-size: 1.5rem;
+          color: gray;
+        }
+
+        .timer {
+          margin-bottom: 1rem;
+        }
+      `}</style>
+    </>
   )
 };
 
